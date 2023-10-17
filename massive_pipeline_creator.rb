@@ -1,6 +1,4 @@
 require 'yaml'
-require 'erb'
-require 'json'
 
 # Customers tell us they've split pipeline upload into 500 step chunks.
 # This is a script to create a massive pipeline with multiple step chunks.
@@ -22,19 +20,11 @@ class MassivePipelineCreator
     end
 
     steps.each_slice(step_chunk_size).with_index do |steps_chunk, index|
-      output_file_contents = <<~ERB
-        steps: <%= steps_chunk.to_json %>
-      ERB
-
-      file_contents = ERB.new(output_file_contents).result(binding)
-
-      json = YAML.load(file_contents)
+      json = { steps: steps_chunk }
 
       output_file_name = "pipeline.chunk-#{index}.yml"
 
-      File.open(output_file_name, "w") do |f|
-        f.write json.to_yaml
-      end
+      File.open(output_file_name, "w") { |file| file.write json.to_yaml }
 
       system!("buildkite-agent", "pipeline", "upload", output_file_name)
     end
