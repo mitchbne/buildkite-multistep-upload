@@ -1,7 +1,5 @@
 require 'yaml'
 
-# Customers tell us they've split pipeline upload into 500 step chunks.
-# This is a script to create a massive pipeline with multiple step chunks.
 class MassivePipelineCreator
   def self.create(...)
     new.create(...)
@@ -38,4 +36,12 @@ class MassivePipelineCreator
   end
 end
 
+# Buildkite limits step uploads to 500 steps per pipeline file. From the documentation:
+#
+# > You can also pipe build pipelines to the command allowing you to create scripts that
+# generate dynamic pipelines. The configuration file has a limit of 500 steps per file.
+# Configuration files with over 500 steps must be split into multiple files and uploaded
+# in separate steps.
+#
+# This script creates a pipeline with 1250 steps, and splits it into 3 files (500, 500, 250).
 MassivePipelineCreator.create(steps_count: 1250, step_chunk_size: 500)
