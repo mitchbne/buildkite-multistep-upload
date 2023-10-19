@@ -1,17 +1,15 @@
 # Buildkite Multi-step Upload Bug
 
 Steps to reproduce:
-- Checkout this repository `git clone git@github.com:mitchbne/buildkite-multistep-upload.git && cd buildkite-multistep-upload && echo $PWD`
-- Note the output of `echo $PWD`, you'll need it in the very next step.
 - Create a pipeline in Buildkite with the following configuration:
-  - Repository: `<echo $PWD>.git`
+  - Repository: `git@github.com:mitchbne/buildkite-multistep-upload.git`
   - Steps:
     ```yaml
     steps:
       - command: "ruby massive_pipeline_creator.rb"
     ```
 - Trigger a build in Builkdite
-- Run an agent locally using `buildkite-agent start --token $AGENT_TOKEN` (you can create an agent token https://buildkite.com/organizations/~/unclustered/agent_tokens/new)
+- Run an agent locally using `buildkite-agent start --token $AGENT_TOKEN` (you can create an agent token [here](https://buildkite.com/organizations/~/unclustered/agent_tokens/new))
 
 Result:
 ```
