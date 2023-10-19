@@ -14,7 +14,7 @@ class MassivePipelineCreator
         key: "step_#{iteration + 1}",
         command: "echo 'Step #{iteration + 1}'"
       }.tap do |step|
-        step["depends_on"] = "step_#{iteration}" if iteration > 0
+        # step["depends_on"] = "step_#{iteration}" if iteration > 0
       end
     end
 
