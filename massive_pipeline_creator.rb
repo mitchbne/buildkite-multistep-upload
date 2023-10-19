@@ -1,4 +1,5 @@
 require 'yaml'
+require 'json'
 
 class MassivePipelineCreator
   def self.create(...)
@@ -22,7 +23,7 @@ class MassivePipelineCreator
 
       output_file_name = "pipeline.chunk-#{index}.yml"
 
-      File.open(output_file_name, "w") { |file| file.write json.to_yaml }
+      File.open(output_file_name, "w") { |file| file.write YAML.dump(JSON.parse(json.to_json)) }
 
       system!("buildkite-agent", "pipeline", "upload", output_file_name)
     end
